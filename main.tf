@@ -14,6 +14,27 @@ resource "aws_s3_bucket" "product_assets" {
 
   tags = {
     Environment = var.environment
-    Purpose  = "product-assets"
+    Purpose     = "product-assets"
   }
 }
+
+resource "aws_iam_policy" "product_assets_access" {
+    name = "${var.project_name}-${var.environment}-product-assets-access"
+    policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+        {
+            Effect = "Allow"
+            Action = [
+                "s3:GetObject",
+                "s3:PutObject"
+            ]
+            Resource = "${aws_s3_bucket.product_assets.arn}/*"
+         }
+        ]
+      })
+        tags = {
+            Environment = var.environment
+            Purpose     = "productassetsaccess"
+        }
+     }   
