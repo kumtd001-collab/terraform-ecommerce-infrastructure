@@ -15,7 +15,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.10.1.0/24"
-  availability_zone       = "${var.aws_region}"
+  availability_zone       = var.aws_region
   map_public_ip_on_launch = true
   depends_on = [
     aws_vpc.main
@@ -52,3 +52,4 @@ resource "aws_instance" "web" {
     Purpose     = "ecommerce-web"
   }
 }
+data "aws_region" "current" {}
